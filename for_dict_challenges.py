@@ -12,7 +12,16 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Петя'},
 ]
-# ???
+
+names_dict = {}
+for student in students:
+    first_name = student['first_name']
+    if names_dict.get(first_name) is not None:
+        names_dict[first_name] += 1
+    else:
+        names_dict[first_name] = 1
+for k in names_dict:
+    print(f'{k}: {names_dict[k]}')
 
 
 # Задание 2
@@ -26,7 +35,28 @@ students = [
     {'first_name': 'Маша'},
     {'first_name': 'Оля'},
 ]
-# ???
+
+def get_most_frequent_name(students_arr):
+    names_dict = {}
+    for student in students_arr:
+        first_name = student['first_name']
+        if names_dict.get(first_name) is not None:
+            names_dict[first_name] += 1
+        else:
+            names_dict[first_name] = 1
+    max_k = ''
+    max_count = 0
+    for k in names_dict:
+        if max_count == 0:
+            max_k = k
+            max_count = names_dict[k]
+        elif names_dict[k] > max_count:
+            max_k = k
+            max_count = names_dict[k]
+    return max_k
+
+most_freq_name = get_most_frequent_name(students)
+print(f'Самое частое имя среди учеников: {most_freq_name}')
 
 
 # Задание 3
@@ -51,7 +81,12 @@ school_students = [
         {'first_name': 'Саша'},
     ],
 ]
-# ???
+
+i = 0
+for group in school_students:
+    i += 1
+    most_freq_name = get_most_frequent_name(group)
+    print(f'Самое частое имя в классе {i}: {most_freq_name}')
 
 
 # Задание 4
@@ -72,7 +107,24 @@ is_male = {
     'Миша': True,
     'Даша': False,
 }
-# ???
+
+def count_male_female(school_class):
+    male_count = 0
+    female_count = 0
+    for student in school_class['students']:
+        if is_male[student['first_name']]:
+            male_count += 1
+        else:
+            female_count += 1
+
+    return { 
+        'male_count': male_count,    
+        'female_count': female_count,    
+    }
+
+for s_class in school:
+    gender_count = count_male_female(s_class)
+    print(f"Класс {s_class['class']}: девочки {gender_count['female_count']}, мальчики {gender_count['male_count']}")
 
 
 # Задание 5
@@ -91,5 +143,19 @@ is_male = {
     'Олег': True,
     'Миша': True,
 }
-# ???
+
+max_dict = {}
+for s_class in school:
+    gender_count = count_male_female(s_class)
+    if max_dict.get('max_male_class') is None or gender_count['male_count'] > max_dict['max_male_count']:
+        max_dict['max_male_class'] = s_class['class']
+        max_dict['max_male_count'] = gender_count['male_count']
+    if max_dict.get('max_female_class') is None or gender_count['female_count'] > max_dict['max_female_count']:
+        max_dict['max_female_class'] = s_class['class']
+        max_dict['max_female_count'] = gender_count['female_count']
+    
+if max_dict.get('max_male_class') is not None:
+    print(f"Больше всего мальчиков в классе {max_dict['max_male_class']}")
+if max_dict.get('max_female_class') is not None:
+    print(f"Больше всего девочек в классе {max_dict['max_female_class']}")
 
